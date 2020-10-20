@@ -1,3 +1,5 @@
+@import '../abstract/buttons';
+
 .add-item-form{
     
     margin: 0;
@@ -5,11 +7,12 @@
     height: auto;
     background-color: #0f111b;
     justify-content: center;
+    display: block;
 }
 
 .add-item-form-input{
-    margin: 0;
-    margin-top: 10px;
+    margin: auto;
+    margin-top: 18px;
     width: 100%;
     height: 6vh;
     border: 2px solid #ef3b7d;
@@ -19,11 +22,10 @@
 }
 
 .add-item-form-submit{
-    margin: 0;
-    margin-top: 10px;
-    height: 6vh;
-    width: 10vw;
-    border-radius: 6px;
+    @include MediumButton();
+    position: relative;
+    float: right;
+    margin-top: 12px;
     border: 2px solid #76d9e6;
     background-color: #4f6294;
     color:  #0f111b;

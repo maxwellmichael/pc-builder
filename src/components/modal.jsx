@@ -52,8 +52,8 @@ export default class HomeModal extends Component{
             <React.Fragment>
                 <Modal
                 {...this.props}
-                size="sm"
                 className="modal-main"
+                dialogClassName="modal-90w"
                 aria-labelledby="contained-modal-title-vcenter"
                 centered
                 >

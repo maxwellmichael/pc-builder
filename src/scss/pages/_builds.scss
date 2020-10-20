@@ -77,7 +77,7 @@
             .build-nav-button{
                 background-color: white;
                 border: 1px solid $purple;
-                height: 15vh;
+                height: 7vh;
                 width: 100px;
                 color: black;
                 margin: auto;
@@ -86,10 +86,6 @@
                 transition-duration: 400ms;
                 outline: 0;
                 padding: 5px;
-
-                svg{
-                    height: 80%;
-                }
                 span{
                     color: $purple;
                     font-weight: bold;
@@ -97,7 +93,11 @@
 
                 &:hover{
                    padding: 0;
-                   border: 1px solid $pink;
+                   border: 2px solid $light-green;
+                   background-color: #191b2b;
+                   span{
+                    color: white;
+                    }
                 }
 
                
@@ -183,7 +183,7 @@
             
             .build-button{
                 border-radius: 4px;
-                border: 2px solid rgba(114, 240, 30, 0.829);
+                border: 2px solid $light-green;
                 color: white;
                 font-weight: bold;
                 padding: auto;

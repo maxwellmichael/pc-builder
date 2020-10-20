@@ -1,24 +1,45 @@
+@import '../abstract/buttons';
+
 
 .delete-build-button-container{
-    margin: auto;
+    position: relative;
     justify-content: center;
-    padding: auto;
+    width: 17vw;
+    height: 9vh;
+    margin: auto;
+    margin-top: 6%;
+    
     
     .delete-build-button-success{
-        margin: auto;
-        width: 10vw;
-        height: 6vh;
+        @include DefaultButton();
         background-color: chartreuse;
+        left:0;
         
     }
     .delete-build-button-danger{
-        margin: auto;
-        width: 10vw;
-        height: 6vh;
+        @include DefaultButton();
         background-color: crimson;
+        right:0;
         
     }
 }
 
+@media only screen and (max-width:600px){
+
+    .delete-build-button-container{
+        width: 45vw;
+        
+        
+        .delete-build-button-success{
+            width: 20vw;
+            height: 6vh;
+        }
+        .delete-build-button-danger{
+            width: 20vw;
+            height: 6vh;
+        }
+    }
+
+}
 
  

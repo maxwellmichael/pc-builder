@@ -28,20 +28,26 @@ export default function EditItemForm(props){
 
             <BuildContext.Consumer>
                 {context=>(
-                    <form className="add-item-form" onSubmit={handleSubmit(onSubmit)}>
-                        <input className="add-item-form-input" placeholder="Part Name"
-                            name="partname"
-                            ref={register({
-                            required: "Required",
-                            pattern: {
-                                message: "Invalid Name"
-                            }
-                            })}
-                        />
+                    <form className="form" onSubmit={handleSubmit(onSubmit)}>
+
+                        <div className="input-container">
+                            <label className="label">Name</label>
+                            <input className="input" placeholder="Part Name"
+                                name="partname"
+                                ref={register({
+                                required: "Required",
+                                pattern: {
+                                    message: "Invalid Name"
+                                }
+                                })}
+                            />
+                        </div>
                         {errors.name && errors.name.message}
-        
+
+                        <div className="input-container">
+                        <label className="label">Price</label>
                         <input
-                            className="add-item-form-input"                           
+                            className="input"                           
                             name="price"
                             ref={register({
                             required: "Required",
@@ -51,24 +57,33 @@ export default function EditItemForm(props){
                             }
                             })}
                         />
+                        </div>
                         {errors.price && errors.price.message}
-        
+                        
+                        <div className="input-container">
+                        <label className="label">Description</label>
                         <input
-                            className="add-item-form-input"
+                            className="input"
                             name="description"
                             ref={register}
                         />
+                        </div>
                         {errors.description && errors.description.message}
-        
+                        
+                        <div className="input-container">
+                        <label className="label">Image URL</label>
                         <input
-                            className="add-item-form-input"
+                            className="input"
                             placeholder="The Link of The Product Image"
                             name="imageUrl"
                             ref={register}
                         />
+                        </div>
                         {errors.imageUrl && errors.imageUrl.message}
-        
-                        <select className="add-item-form-input" name="category" ref={register({
+
+                        <div className="input-container">
+                        <label className="label">Category </label>
+                        <select className="input" name="category" ref={register({
                             required: "Required",
                             })}>
                             <option name="Motherboard">Motherboard</option>
@@ -85,10 +100,11 @@ export default function EditItemForm(props){
                             <option name="Earphone">Earphone</option>
                             <option name="Case">Case</option>
                         </select>
+                        </div>
                         {errors.description && errors.description.message}
                         
         
-                        <button className="add-item-form-submit" type="submit">Submit</button>
+                        <button className="submit" type="submit">Submit</button>
                     </form>
                 )}
             </BuildContext.Consumer>

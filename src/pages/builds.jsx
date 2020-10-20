@@ -37,7 +37,6 @@ class Builds extends Component{
 
                 <div className="builds-nav-button-container">
                     <button onClick={()=>this.context.setModalType(newBuildModal)} className="build-nav-button" >
-                        <svg className="nav__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 24"><g data-name="Layer 2"><g data-name="Layer 1"><path d="M19.08 1l-12-1H7a.62.62 0 0 0-.19 0h-.14l-.09.1-.13.07-.13.09L.45 4.17A1 1 0 0 0 0 5v17a1 1 0 0 0 .84 1l6 1H19a1 1 0 0 0 1-1V2a1 1 0 0 0-.92-1zM6 21.82l-4-.67V5.54l4-2.67zM18 22H8V2.09l10 .83z"></path><circle cx="13" cy="18" r="1"></circle><path d="M17 4.6L9 4v2l8 .6v-2zM17 7.6L9 7v2l8 .6v-2z"></path></g></g></svg>
                         <span>New Build</span>
                     </button>
                 </div>

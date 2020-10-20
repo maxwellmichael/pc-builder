@@ -1,0 +1,24 @@
+@mixin DefaultButton {
+    position: absolute;
+    margin: auto;
+    width: 8vw;
+    height: 4vh;
+    border-radius: 4px;
+    border: 2px solid black;
+    color: black;
+    font-weight: bold;
+    font-size: medium;
+
+    @media only screen and (max-width:600px){
+        width: 21vw;
+        height: 6vh;
+        font-size: large;
+    }
+
+}
+
+@mixin MediumButton{
+    @include DefaultButton();
+    width: 14vw;
+    height: 7vh;
+}
