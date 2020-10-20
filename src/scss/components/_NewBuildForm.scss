@@ -1,0 +1,16 @@
+$FormHeight: 5vh;
+
+.new-build-container{
+    margin: auto;
+    justify-content: center;
+
+    .new-build-form-input{
+        margin: auto;
+        height: $FormHeight;
+    }
+    .new-build-button{
+        margin:5px;
+        height: $FormHeight;
+        padding: auto;
+    }
+}

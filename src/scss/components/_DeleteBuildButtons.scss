@@ -1,0 +1,24 @@
+
+.delete-build-button-container{
+    margin: auto;
+    justify-content: center;
+    padding: auto;
+    
+    .delete-build-button-success{
+        margin: auto;
+        width: 10vw;
+        height: 6vh;
+        background-color: chartreuse;
+        
+    }
+    .delete-build-button-danger{
+        margin: auto;
+        width: 10vw;
+        height: 6vh;
+        background-color: crimson;
+        
+    }
+}
+
+
+ 

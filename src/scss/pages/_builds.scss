@@ -1,0 +1,283 @@
+@import '../abstract/color_variables';
+
+
+@mixin build-row-button-default{
+    color: white;
+}
+
+@mixin build-row-title{
+    font-size: 50px;
+    font-weight: bold;
+    color: #191b2b;
+    font-family: 'Sora', sans-serif;
+    text-shadow: 4px 10px 10px rgba(0,0,0,.6);
+}
+
+
+.builds_main{
+    margin:0;
+    width: 100%;
+    height: auto;
+    background-color: black;
+
+    .builds-content-marquee{
+        margin:0;
+        padding:0;
+        width: 100%;
+        height: 300px;
+        background-color: $purple;
+        display: flex;
+
+        .marquee-contents{
+            justify-content: center;
+            padding: 5%;
+            width:60vw;
+            height: auto;
+            color: $footer-p;
+
+            h1{
+                font-size: 35px;
+                font-weight: bold;
+            }
+            p{
+                font-weight: bold;
+            }
+           
+        }
+
+        .marquee-image{
+            background-image: url("https://www.intel.in/content/dam/www/public/us/en/images/photography-consumer/rwd/gaming/s4-a5-m-build-a-pc-rwd.jpg.rendition.intel.web.1280.720.jpg");
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            margin: 0;
+            width: 40vw;
+            height: 100%;
+
+        }
+    }
+
+    .container-fluid{
+        margin: 0;
+        padding: 0;
+        background-color: #191b2b;
+
+        .builds-nav-button-container{
+            
+            margin: 0;
+            padding:auto;
+            justify-content: center;
+            height: 15vh;
+            width: 100vw;
+            display: inline;
+            padding-left: 5%;
+            padding-right: 5%;
+
+            
+            .build-nav-button{
+                background-color: white;
+                border: 1px solid $purple;
+                height: 15vh;
+                width: 100px;
+                color: black;
+                margin: auto;
+                display: block;
+                border-radius: 6px;
+                transition-duration: 400ms;
+                outline: 0;
+                padding: 5px;
+
+                svg{
+                    height: 80%;
+                }
+                span{
+                    color: $purple;
+                    font-weight: bold;
+                }
+
+                &:hover{
+                   padding: 0;
+                   border: 1px solid $pink;
+                }
+
+               
+            }
+
+
+            
+        }
+    
+        .build-container{
+            margin: 4%;
+            border-radius: 12px;
+            padding: 0;
+            padding-top: 5%;
+            background-color: #5a6074;
+            border: 2px solid black;
+            box-shadow: 0px 13px 44px -12px rgba(0,0,0,1);
+
+    
+            .build-title-row-hidden{
+                margin: auto;
+                justify-content: center;
+                color: blue;
+                
+                .build-rename-input{
+                    display: none;
+                }
+                .build-row-button{
+                    @include build-row-button-default;
+                    display: none;
+                }
+                .build-title{
+                    @include build-row-title;
+                    display: inline;
+                }
+            }
+    
+            .build-title-row-shown{
+                margin: auto;
+                justify-content: center;
+                color: blue;
+                
+                .build-rename-input{
+                    display: inline;
+                }
+                .build-row-button{
+                    @include build-row-button-default;
+                    display: inline;
+                }
+                .build-title{
+                    display: none;
+                }
+            }
+
+            .build-category-dashboard{
+                width: 80vw;
+                height: 3px;
+                margin: auto;
+                margin-bottom: 5%;
+                background-color: $purple;
+            }
+    
+            
+    
+    
+        }
+    
+    
+        .build-item-row{
+            
+            padding: 10px;
+            margin: 0;
+            display: flex;
+        }
+    
+        .build-button-group{
+            margin: auto;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            justify-content: center;
+            display: inline;
+            height: 60px;
+            
+            .build-button{
+                border-radius: 4px;
+                border: 2px solid rgba(114, 240, 30, 0.829);
+                color: white;
+                font-weight: bold;
+                padding: auto;
+                margin: auto;
+                margin-left: 8px;
+                width: 10vw;
+                height: 40px;
+                font-size: 16px;
+                background-color: black;
+            }
+
+        }
+    }
+
+}
+
+
+// Tablet Size
+@media only screen and (max-width: 900px) {
+
+    .builds_main{
+
+        
+
+        .container-fluid{
+
+            .build-button-group{
+                padding: 5px;
+                
+                .build-button{
+                   
+                    margin-left: 10px;
+                    width: 15vw;
+                    height: 40px;
+                    font-size: 15px;
+                }
+            }
+
+        }
+
+
+    }
+
+}
+
+
+@media only screen and (max-width: 600px) {
+
+    .builds_main{
+
+        .builds-content-marquee{
+            display: block;
+    
+            .marquee-contents{   
+                height: 50%;
+                width:100vw;
+                padding: 3%;
+                
+                h1{
+                    font-size: 25px;
+                    
+                }
+
+                p{
+                    font-size: 13px;
+                   
+                }
+            }
+    
+            .marquee-image{
+                width: 100vw;
+                height: 50%;
+            }
+        }
+
+        .container-fluid{
+
+            .build-button-group{
+                padding: 5px;
+                
+                .build-button{
+                   
+                    margin-left: 10px;
+                    width: 20vw;
+                    height: 40px;
+                    font-size: 12px;
+                }
+            }
+
+        }
+
+
+    }
+
+}
+
+

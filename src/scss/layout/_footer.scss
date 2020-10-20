@@ -1,0 +1,52 @@
+@import '../abstract/color_variables';
+
+.footer-container{
+    position:absolute;
+    left:0;
+    bottom:0;
+    right:0;
+    font-family: 'Baloo Tammudu 2', cursive;
+    display: block;
+    background-color: $violet;
+
+    .p-small{
+           
+        font: 400 0.875rem/1.5rem;
+        color: $footer-p;
+        letter-spacing: 1px;
+    }
+
+    a{
+        text-decoration: underline;
+        font: 400 0.875rem/1.5rem;
+        color: $footer-p;
+    }
+    
+
+    .footer{
+        margin: auto;
+        line-height: 2rem;
+        padding-top: 20px;
+
+        h4{
+           
+            font: 700 1.375rem/1.75rem;
+            letter-spacing: -0.1px;
+            color: $footer-h;
+        }
+       
+    }
+
+    .copyright{
+        padding-top: 1.375rem;
+        border-top: 1px solid #718ad1;
+        text-align: center;
+
+        a{
+            text-decoration: none;
+        }
+    }
+
+}
+
+

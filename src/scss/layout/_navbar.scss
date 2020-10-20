@@ -1,0 +1,10 @@
+@import '../abstract/color_variables';
+
+.navbar{
+    background-color: $navbarbg;
+    border-bottom: 2px solid $pink;
+
+    a{
+        color: white;
+    }
+}
