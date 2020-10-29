@@ -1,6 +1,8 @@
 import React,{Component} from 'react';
 import {Modal} from 'react-bootstrap';
-import {BuildContext} from '../contexts/BuildContexts';
+import { Redirect } from 'react-router-dom'
+
+import {MainContext} from '../contexts/MainContexts';
 import NewBuildForm from './NewBuildForm';
 import DeleteBuildButtons from './DeleteBuildButtons';
 
@@ -11,7 +13,7 @@ import AddItemForm from './AddItemForm';
 
 export default class HomeModal extends Component{
 
-    static contextType = BuildContext;
+    static contextType = MainContext;
 
     setModalAsToType = (modal)=>{
         if(modal.type==="NEWBUILD"){
@@ -39,6 +41,9 @@ export default class HomeModal extends Component{
             return(
                 <ItemEditForm defaultValues={this.context.modal.data} editItemValues={(value)=>this.context.editItemValues(value, modal.itemId)} buildId={modal.buildId} />
             );
+        }
+        else if(modal.type==="LOGINSUCCESS"){
+            return <Redirect to="/builds" />
         }
         else{
             return(

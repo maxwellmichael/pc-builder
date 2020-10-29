@@ -1,13 +1,13 @@
 import React,{useState} from 'react';
 import {Button} from 'react-bootstrap';
-import {BuildContext} from '../contexts/BuildContexts'
+import {MainContext} from '../contexts/MainContexts'
 
 export default function Form(){
 
     const [value, setValue] = useState("");
 
     return(
-        <BuildContext.Consumer>
+        <MainContext.Consumer>
             {context=>(
                  <div className="new-build-container">
                     <input placeholder="Name of the Build" onChange={(e)=>setValue(e.target.value)} className="new-build-form-input" />
@@ -16,7 +16,7 @@ export default function Form(){
                     </Button>
                 </div>
             )}
-        </BuildContext.Consumer>
+        </MainContext.Consumer>
        
     );
 }

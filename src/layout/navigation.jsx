@@ -1,10 +1,12 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
 import {Navbar, Nav, NavDropdown} from 'react-bootstrap';
+import {MainContext} from '../contexts/MainContexts'
 
 
 class NavBar extends Component{
 
+    static contextType = MainContext;
 
     render(){
 
@@ -14,8 +16,12 @@ class NavBar extends Component{
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav">
                     <Nav className="mr-auto">
+
                     <Link className="nav-link" to="/">Home</Link>
-                    <Link className="nav-link" to="/builds">Builds</Link>
+                    {this.context.isAuthorized ? <Link className="nav-link" to="/builds">Builds</Link> : null}
+                    <Link className="nav-link" to="/userauthenticate">Login/SignUp</Link>
+                    {this.context.isAuthorized ? <Link onClick={()=>this.context.setLogout()} to="/userauthenticate" className="nav-link">Logout</Link> : null}
+                    
                     <NavDropdown title="Dropdown" id="collasible-nav-dropdown">
                         <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
                         <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>

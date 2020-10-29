@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Row, Button, ButtonGroup} from 'react-bootstrap';
-import {BuildContext} from '../contexts/BuildContexts';
+import {MainContext} from '../contexts/MainContexts';
 
 
 
@@ -8,7 +8,7 @@ import {BuildContext} from '../contexts/BuildContexts';
 
 export default class Rename extends Component{
 
-    static contextType = BuildContext;
+    static contextType = MainContext;
     
    
 

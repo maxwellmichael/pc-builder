@@ -1,5 +1,5 @@
 import React from 'react';
-import {BuildContext} from '../contexts/BuildContexts';
+import {MainContext} from '../contexts/MainContexts';
 import {useForm} from 'react-hook-form';
 
 
@@ -18,7 +18,7 @@ export default function AddItemForm(props){
     return(
         <React.Fragment>
 
-            <BuildContext.Consumer>
+            <MainContext.Consumer>
                 {context=>(
                     <form className="add-item-form" onSubmit={handleSubmit(onSubmit)}>
                         <input className="add-item-form-input" placeholder="Part Name"
@@ -85,7 +85,7 @@ export default function AddItemForm(props){
                         <button className="add-item-form-submit" type="submit">Submit</button>
                     </form>
                 )}
-            </BuildContext.Consumer>
+            </MainContext.Consumer>
 
         </React.Fragment>
     );

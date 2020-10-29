@@ -1,13 +1,30 @@
 import React, {Component} from 'react';
 import {Spring} from 'react-spring/renderprops';
 import VisibilitySensor from 'react-visibility-sensor';
+import {Link} from 'react-router-dom';
+import {MainContext} from '../contexts/MainContexts';
+import Loader from '../components/loader';
 
 
 
 export default class Home extends Component{
 
+    static contextType = MainContext;
+
+
+
+
+    componentDidMount(){
+        this.context.setLoader()
+    }
+    componentWillUnmount(){
+        this.context.setLoader()
+    }
+
 
     render(){
+        if(this.context.loader.isLoading) return <Loader message={this.context.loader.message} />
+
         return(
             <React.Fragment>
                 
@@ -47,7 +64,9 @@ export default class Home extends Component{
                                     >
                                 {(props=>(
                                     <div className="banner-button-container" style={props}>
-                                        <button className="banner-button">Go To Builds</button>
+                                        <Link className="banner-link" to="/builds">
+                                            <button className="banner-button">Go To Builds</button>
+                                        </Link>
                                     </div>
                                     
                                 ))}

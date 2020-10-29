@@ -1,22 +1,35 @@
 import React, {Component} from 'react';
 import Modal from '../components/modal';
+import FlashMessage from '../components/FlashMessage';
 import {Row, Container} from 'react-bootstrap';
 import Card from '../components/card';
-import {BuildContext} from '../contexts/BuildContexts';
+import {MainContext} from '../contexts/MainContexts';
 import BuildTitle from '../components/BuildTitle';
-import {Transition} from 'react-spring/renderprops'
+import {Transition} from 'react-spring/renderprops';
+import Loader from '../components/loader';
 
 
 
 class Builds extends Component{
 
-    static contextType = BuildContext;
+    static contextType = MainContext;
+
+
+    componentDidMount(){
+        this.context.updateBuilds()
+        this.context.setLoader()
+        
+    }
+    componentWillUnmount(){
+        this.context.setLoader()
+    }
 
     render(){
         const newBuildModal = {title:"Create a New Build", type:"NEWBUILD", buildId:null}
-        
-        
         return(
+            <React.Fragment>
+            <FlashMessage />
+            {this.context.loader.isLoading ? <Loader /> : null}
             <div className="builds_main">
                 <div className="builds-content-marquee">
                     <div className="marquee-contents">
@@ -100,6 +113,7 @@ class Builds extends Component{
                } 
             </Container>
             </div>
+            </React.Fragment>
         );
     }
 

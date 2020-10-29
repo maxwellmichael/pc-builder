@@ -8,6 +8,11 @@
     color: black;
     font-weight: bold;
     font-size: medium;
+    transition: 0.5s ease-in-out;
+
+    &:hover{
+        border: 2px solid red;
+    }
 
     @media only screen and (max-width:600px){
         width: 21vw;

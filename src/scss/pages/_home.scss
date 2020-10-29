@@ -48,6 +48,7 @@
              color:white;
              font-size: 38px;
              font-weight: 700;
+             font-family: Rajdhani,Arial,Verdana,Helvetica,sans-serif;
              justify-content: center;
              text-align: center;
              font-family: 'Sora', sans-serif;
@@ -68,24 +69,30 @@
              text-align: center;
              margin: auto;
 
+             .banner-link{
+               text-decoration: none;
+               
+             }
+
              .banner-button{
               border-radius: 6px;
               width: 150px;
               height: 7vh;
-              font-family: 'Sora', sans-serif;
+              font-family: Rajdhani,Arial,Verdana,Helvetica,sans-serif;
               color: white;
               font-weight: bold;
               background-color: black;
               border: 2px solid $pink;
               justify-content: center;
-              font-size: 0.3em;
+              font-size: 0.4em;
               padding: 5px;
               transition-property: background-color;
               transition-duration: 500ms;
-              transition-timing-function: linear;
+              transition-timing-function: ease-in;
               transition-delay: 200ms;
 
               &:hover{
+                padding: 4px;
                 outline: none;
                 color: black;
                 background-color: $pink;

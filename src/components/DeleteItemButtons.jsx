@@ -1,12 +1,12 @@
 import React from 'react';
-import {BuildContext} from '../contexts/BuildContexts';
+import {MainContext} from '../contexts/MainContexts';
 
 
 
 export default function DeleteItemButtons(props){
 
     return(
-        <BuildContext.Consumer>
+        <MainContext.Consumer>
             {context=>(
                 <React.Fragment>
                     <div className="delete-build-button-container">
@@ -20,6 +20,6 @@ export default function DeleteItemButtons(props){
                     </div>
                 </React.Fragment>
             )}
-        </BuildContext.Consumer>
+        </MainContext.Consumer>
     );
 }
