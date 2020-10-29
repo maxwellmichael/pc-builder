@@ -20,8 +20,9 @@
     "react-dom": "^16.13.1",
     "react-hook-form": "^6.9.2",
     "react-notifications-component": "^2.4.1",
+    "react-responsive": "^8.1.0",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "3.4.3",
+    "react-scripts": "^4.0.0",
     "react-spring": "^8.0.27",
     "react-transition-group": "^4.4.1",
     "react-visibility-sensor": "^5.1.1"

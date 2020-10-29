@@ -17,11 +17,11 @@ class Builds extends Component{
 
     componentDidMount(){
         this.context.updateBuilds()
-        this.context.setLoader()
+        this.context.setLoaderFalse()
         
     }
     componentWillUnmount(){
-        this.context.setLoader()
+        this.context.setLoaderTrue()
     }
 
     render(){

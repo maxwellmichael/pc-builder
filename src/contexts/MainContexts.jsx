@@ -46,13 +46,16 @@ class MainContextProvider extends Component{
           RightPanelOverlayActive: true,
         },
 
-       
+        authMobileForm:{
+          isLogin:false
+        },
+
         isAuthorized:false,
          
         
     }
 
-    componentDidMount(){
+  componentDidMount(){
       this.setCSRFTokens()
       if(this.state.tokens.csrf_access_token){
         this.setState({isAuthorized:true})
@@ -60,10 +63,23 @@ class MainContextProvider extends Component{
 
    }
 
+  /********* Auth Mobile Form Functions *********/
+
+  setAuthMobileLogin = ()=>{
+    const newState = {...this.state};
+    newState.authMobileForm.isLogin = true;
+    this.setState({newState})
+  }
+
+  unsetAuthMobileLogin = ()=>{
+    const newState = {...this.state};
+    newState.authMobileForm.isLogin = false;
+    this.setState({newState})
+  }
 
 
 
-   /* Build Title Functions */ 
+/* ***************Build Title Functions ********************/ 
 setNameInput = (id)=>{
     const newState = {...this.state};
     newState.buildTitle.UnhideElementId = id;
@@ -117,7 +133,9 @@ renameBuildTitle = (id, ref)=>{
         })
 }
 
-/* New Build */
+
+
+/**************** Build Functions ***************/
 setNewBuild = (name)=>{
   this.setModal()
   this.setLoader("Creating New Build....")
@@ -149,7 +167,7 @@ setNewBuild = (name)=>{
 
 deleteBuild = (id)=>{
     this.setModal()
-    this.setLoader(`Deleting....`)
+    this.setLoaderTrue()
     axios({
         method: 'delete',
         url: `http://pcbuilder.com:5000/build/`,
@@ -166,7 +184,7 @@ deleteBuild = (id)=>{
       }).then(
           res=>{
            this.updateBuilds()
-           this.setLoader()
+           this.setLoaderFalse()
           });
 
 } 
@@ -174,7 +192,7 @@ deleteBuild = (id)=>{
 updateBuilds = ()=>{
     const csrf_access_token = Cookies.get('csrf_access_token');
     if(csrf_access_token){
-      this.setLoader("Updating Builds....")
+      this.setLoaderTrue()
       axios({
         method: 'get',
         url: `http://pcbuilder.com:5000/build/`, 
@@ -190,7 +208,7 @@ updateBuilds = ()=>{
           console.log(res.status)
             if(res.status===200){
                 this.setState({builds:res.data})
-                this.setLoader()
+                this.setLoaderFalse()
                 this.setCSRFTokens() 
               }
                   
@@ -216,7 +234,7 @@ updateBuilds = ()=>{
 
 
 
-//Items Functions
+//******************** Items Functions ***********************
 editItemValues = (values, itemId)=>{
   this.setModal();
   this.setLoader("Changing Values....");
@@ -306,7 +324,7 @@ this.setLoader('Deleting Component....')
 
 
 
-  /* Token Functions */
+  /********************** Token Functions ****************/
   setCSRFTokens=()=>{
       const csrf_access_token = Cookies.get('csrf_access_token');
       const csrf_refresh_token = Cookies.get('csrf_refresh_token');
@@ -360,7 +378,7 @@ this.setLoader('Deleting Component....')
 
 
 
-  /* Auth Form Functions   */
+  /******************* Auth Form Functions ****************/
   setRightPanelOverlayActive=()=>{
       let newState = {...this.state}
       newState.authForm.RightPanelOverlayActive = !newState.authForm.RightPanelOverlayActive
@@ -437,8 +455,18 @@ this.setLoader('Deleting Component....')
     setLoader = (message)=>{
         const newState = {...this.state};
         newState.loader.isLoading = !newState.loader.isLoading;
-        newState.loader.message = !newState.loader.message;
+        newState.loader.message = message;
         this.setState({newState})
+    }
+    setLoaderTrue = ()=>{
+      const newState = {...this.state};
+      newState.loader.isLoading = true
+      this.setState({newState})
+    }
+    setLoaderFalse = ()=>{
+      const newState = {...this.state};
+      newState.loader.isLoading = false
+      this.setState({newState})
     }
 
 
@@ -491,11 +519,11 @@ this.setLoader('Deleting Component....')
     
 
     render(){
-        const {isAuthorized, flashMessage, builds, buildTitle, modal, loader, authForm} = this.state;
-        const {setLogout, setFlash, setFlashType, updateBuilds, setAccessToken, RefreshAccessToken, handleLoginSubmit, setRightPanelOverlayActive, setLoader, editItemValues, deleteItem, setNewItem, setNameInput, changeTitleInputValue, renameBuildTitle, setModal, setModalType, setNewBuild, deleteBuild} = this;
+        const {authMobileForm, isAuthorized, flashMessage, builds, buildTitle, modal, loader, authForm} = this.state;
+        const {unsetAuthMobileLogin, setAuthMobileLogin, setLogout, setFlash, setFlashType, updateBuilds, setAccessToken, RefreshAccessToken, handleLoginSubmit, setRightPanelOverlayActive, setLoaderFalse, setLoaderTrue, setLoader, editItemValues, deleteItem, setNewItem, setNameInput, changeTitleInputValue, renameBuildTitle, setModal, setModalType, setNewBuild, deleteBuild} = this;
 
         return( 
-            <MainContext.Provider value={{isAuthorized, setLogout, setFlash, setFlashType, flashMessage, updateBuilds, setAccessToken, RefreshAccessToken, handleLoginSubmit, setRightPanelOverlayActive, authForm, setLoader, loader, editItemValues, deleteItem,setNewItem, builds, buildTitle, modal, setNameInput, changeTitleInputValue, renameBuildTitle, setModal, setModalType, setNewBuild, deleteBuild}}>
+            <MainContext.Provider value={{unsetAuthMobileLogin, setAuthMobileLogin, authMobileForm, isAuthorized, setLogout, setFlash, setFlashType, flashMessage, updateBuilds, setAccessToken, RefreshAccessToken, handleLoginSubmit, setRightPanelOverlayActive, authForm, setLoaderFalse, setLoaderTrue, setLoader, loader, editItemValues, deleteItem,setNewItem, builds, buildTitle, modal, setNameInput, changeTitleInputValue, renameBuildTitle, setModal, setModalType, setNewBuild, deleteBuild}}>
                 {this.props.children}
             </MainContext.Provider>
         );
