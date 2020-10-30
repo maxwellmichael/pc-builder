@@ -430,8 +430,9 @@ this.setLoader('Deleting Component....')
         },
         })
     .then(res=>{
+        const csrf_access_token = Cookies.get('csrf_access_token');
       
-        if(res.status==200){
+        if(res.status==200 && csrf_access_token){
           this.setState({isAuthorized:true})
           const loginSuccessFlash = {title:"Login", func:"LOGIN_SUCCESS", typeSuccess:true, message: "Successfully Logged In!..", buttonText: "Continue"}
           this.setFlashType(loginSuccessFlash)
