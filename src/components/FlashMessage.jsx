@@ -16,31 +16,13 @@ export default class FlashMessage extends Component{
             return <Redirect to="/userauthenticate" />
         }
         else if(func==="LOGIN_SUCCESS"){
-            return <Redirect to="/" />
+            return <Redirect to="/builds" />
         }
         else{
             return null
         }
     }
 
-
-    successMessage=()=>{
-
-        return(
-            <div className="msg-success">
-                    <div className="letter"></div>
-            </div>
-        )
-    }
-
-    errorMessage=()=>{
-
-        return(
-            <div className="msg-error">
-                <div className="letter"></div>
-            </div>
-        )
-    }
 
     render(){
 

@@ -9,14 +9,13 @@ export const ProtectedRoute =({component:Component, ...rest})=>{
 
     const context = React.useContext(MainContext);
 
-    const csrf_access_token = Cookies.get('csrf_access_token');
-    console.log("CSRF-TOKEN", csrf_access_token)
+    const isAuthenticated = Cookies.get('isAuthenticated');
 
     return(
         <Route 
             {...rest} 
             render={props=>{
-                if(csrf_access_token){
+                if(isAuthenticated){
                     return <Component {...props} />
                 }
                 else{

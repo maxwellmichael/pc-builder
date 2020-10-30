@@ -36,7 +36,7 @@ class MainContextProvider extends Component{
         },
 
         tokens:{
-         
+          access_token:null,
           csrf_access_token:null,
           csrf_refresh_token:null,
 
@@ -400,7 +400,7 @@ this.setLoader('Deleting Component....')
     })
     .then(resp=>{
       if(resp.status===200){
-        this.setState({isAuthorized:false})
+        Cookies.set('isAuthenticated', false, { expires: 1 });
         const loginRetryFlash = {title:"Login", func:"LOGIN_RETRY", typeSuccess:false, message: "Please Login to Continue", buttonText: "Login"}
           this.setFlashType(loginRetryFlash)
           this.setFlash()
@@ -432,12 +432,11 @@ this.setLoader('Deleting Component....')
         },
         })
     .then(res=>{
-        const csrf_access_token = Cookies.get('csrf_access_token');
-        console.log("CSRF-ACCESS-TOKEN", csrf_access_token)
+        
         console.log("RESPONSE", res)
 
-        if(res.status==200 && csrf_access_token){
-          this.setState({isAuthorized:true})
+        if(res.status==200){
+          Cookies.set('isAuthenticated', true, { expires: 1 });
           const loginSuccessFlash = {title:"Login", func:"LOGIN_SUCCESS", typeSuccess:true, message: "Successfully Logged In!..", buttonText: "Continue"}
           this.setFlashType(loginSuccessFlash)
           this.setFlash()
