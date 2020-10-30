@@ -38,7 +38,7 @@ export default class MobileForm extends Component{
 
         axios({
             method: 'post',
-            url: 'http://127.0.0.1:5000/userregister',
+            url: 'https://pc-builder-api.herokuapp.com/userregister',
             data: bodyFormData,
             headers: {'Content-Type': 'multipart/form-data' }
             })
