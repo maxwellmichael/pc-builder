@@ -427,11 +427,15 @@ this.setLoader('Deleting Component....')
         withCredentials: true,
         headers: {
           'Content-Type': 'multipart/form-data',
+          'Access-Control-Allow-Credentials': true,
+          'Access-Control-Allow-Methods': '*',
         },
         })
     .then(res=>{
         const csrf_access_token = Cookies.get('csrf_access_token');
-      
+        console.log("CSRF-ACCESS-TOKEN", csrf_access_token)
+        console.log("RESPONSE", res)
+
         if(res.status==200 && csrf_access_token){
           this.setState({isAuthorized:true})
           const loginSuccessFlash = {title:"Login", func:"LOGIN_SUCCESS", typeSuccess:true, message: "Successfully Logged In!..", buttonText: "Continue"}
