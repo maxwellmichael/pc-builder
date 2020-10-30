@@ -16,7 +16,7 @@ export default class FlashMessage extends Component{
             return <Redirect to="/userauthenticate" />
         }
         else if(func==="LOGIN_SUCCESS"){
-            return <Redirect to="/builds" />
+            return <Redirect to="/" />
         }
         else{
             return null

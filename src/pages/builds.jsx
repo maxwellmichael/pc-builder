@@ -5,7 +5,6 @@ import {Row, Container} from 'react-bootstrap';
 import Card from '../components/card';
 import {MainContext} from '../contexts/MainContexts';
 import BuildTitle from '../components/BuildTitle';
-import {Transition} from 'react-spring/renderprops';
 import Loader from '../components/loader';
 
 
@@ -20,7 +19,9 @@ class Builds extends Component{
         this.context.setLoaderFalse()
         
     }
-    
+    componentWillUnmount(){
+        this.context.setLoaderTrue()
+    }
 
     render(){
         const newBuildModal = {title:"Create a New Build", type:"NEWBUILD", buildId:null}
