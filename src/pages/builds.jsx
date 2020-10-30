@@ -20,9 +20,7 @@ class Builds extends Component{
         this.context.setLoaderFalse()
         
     }
-    componentWillUnmount(){
-        this.context.setLoaderTrue()
-    }
+    
 
     render(){
         const newBuildModal = {title:"Create a New Build", type:"NEWBUILD", buildId:null}
