@@ -98,7 +98,7 @@ renameBuildTitle = (id, ref)=>{
     console.log("new Name", newName);
     axios({
         method: 'patch',
-        url: `https://pc-builder-api.herokuapp.com/build/`,
+        url: `https://pc-builder-main.herokuapp.com/build/`,
         withCredentials: true,
         data: {
           id: id,
@@ -141,7 +141,8 @@ setNewBuild = (name)=>{
   this.setLoader("Creating New Build....")
   axios({
       method: 'put',
-      url: `https://pc-builder-api.herokuapp.com/build/`,
+      url: `https://pc-builder-main.herokuapp.com/build/`,
+      
       data: {
         name: name
       },
@@ -149,18 +150,22 @@ setNewBuild = (name)=>{
       headers:{
         'Access-Control-Allow-Credentials': true,
         'Access-Control-Allow-Methods': '*',
-        'csrf_access_token': this.state.tokens.csrf_access_token,
-        'csrf_refresh_token': this.state.tokens.csrf_refresh_token,
+        'csrf_access_token': Cookies.get('csrf_access_token'),
+        'csrf_refresh_token': Cookies.get('csrf_refresh_token'),
       }
 
     }).then(
         res=>{
+          console.log("Put", res)
           const newBuild = res.data;
           let newBuilds = [...this.state.builds];
           newBuilds.push(newBuild)
           this.setState({builds: newBuilds});
           this.setLoader()
-        });
+        })
+      .catch(err=>{
+        console.log(err)
+      })
 
 }
 
@@ -170,7 +175,7 @@ deleteBuild = (id)=>{
     this.setLoaderTrue()
     axios({
         method: 'delete',
-        url: `https://pc-builder-api.herokuapp.com/build/`,
+        url: `https://pc-builder-main.herokuapp.com/build/`,
         withCredentials: true,
         data: {
           id: id
@@ -195,7 +200,7 @@ updateBuilds = ()=>{
       this.setLoaderTrue()
       axios({
         method: 'get',
-        url: `https://pc-builder-api.herokuapp.com/build/`, 
+        url: `https://pc-builder-main.herokuapp.com/build/`, 
         withCredentials: true,
         headers:{
           'Access-Control-Allow-Credentials': true,
@@ -240,7 +245,7 @@ editItemValues = (values, itemId)=>{
   this.setLoader("Changing Values....");
   axios({
       method: 'patch',
-      url: `https://pc-builder-api.herokuapp.com/item/${values.buildId}`,
+      url: `https://pc-builder-main.herokuapp.com/item/${values.buildId}`,
       withCredentials: true,
       data: {
         id: itemId,
@@ -271,7 +276,7 @@ setNewItem = (values)=>{
   this.setLoader(`Adding ${values.partname}...`)
   axios({
       method: 'put',
-      url: `https://pc-builder-api.herokuapp.com/item/${values.buildId}`,
+      url: `https://pc-builder-main.herokuapp.com/item/${values.buildId}`,
       withCredentials: true,
       data: {
         name: values.partname,
@@ -299,7 +304,7 @@ this.setModal()
 this.setLoader('Deleting Component....')
   axios({
       method: 'delete',
-      url: `https://pc-builder-api.herokuapp.com/item/${buildId}`,
+      url: `https://pc-builder-main.herokuapp.com/item/${buildId}`,
       withCredentials: true,
       data: {
         id: itemId
@@ -337,7 +342,7 @@ this.setLoader('Deleting Component....')
   RefreshAccessToken=()=>{
     axios({
         method: 'get',
-        url: 'https://pc-builder-api.herokuapp.com/refreshaccesstoken',
+        url: 'https://pc-builder-main.herokuapp.com/refreshaccesstoken',
         withCredentials: true,
         headers:{
             'Access-Control-Allow-Credentials': true,
@@ -389,7 +394,7 @@ this.setLoader('Deleting Component....')
   setLogout = ()=>{
     axios({
       method: 'delete',
-      url: `https://pc-builder-api.herokuapp.com/userlogout`,
+      url: `https://pc-builder-main.herokuapp.com/userlogout`,
       withCredentials: true,
       headers:{
         'Access-Control-Allow-Credentials': true,
@@ -422,13 +427,13 @@ this.setLoader('Deleting Component....')
 
     axios({
         method: 'post',
-        url: 'https://pc-builder-api.herokuapp.com/userlogin',
+        url: 'https://pc-builder-main.herokuapp.com/userlogin',
         data: bodyFormData,
         withCredentials: true,
         headers: {
           'Content-Type': 'multipart/form-data',
           'Access-Control-Allow-Credentials': true,
-          'Access-Control-Allow-Methods': '*',
+          'Access-Control-Allow-Origin': '*',
         },
         })
     .then(res=>{
@@ -441,13 +446,18 @@ this.setLoader('Deleting Component....')
           this.setFlashType(loginSuccessFlash)
           this.setFlash()
         }
-        else if(res.status==401){
-          this.RefreshAccessToken()
-        }
     })
     .catch(err=>{
-        console.log(err)
-        this.RefreshAccessToken()
+      console.log("LOGIN_ERROR", err)
+        if(err.response.status===401){
+          this.RefreshAccessToken()
+        }
+        else if(err.response.status===404){
+          const loginRetryFlash = {title:"Login", func:"LOGIN_RETRY", typeSuccess:false, message: "Please Login to Continue", buttonText: "Login"}
+          this.setFlashType(loginRetryFlash)
+          this.setFlash()
+        }
+        
     })
   }
 
