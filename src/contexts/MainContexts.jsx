@@ -98,7 +98,7 @@ renameBuildTitle = (id, ref)=>{
     console.log("new Name", newName);
     axios({
         method: 'patch',
-        url: `https://pc-builder-api.herokuapp.com/build/`,
+        url: `http://pc-builder-api.herokuapp.com/build/`,
         withCredentials: true,
         data: {
           id: id,
@@ -141,7 +141,7 @@ setNewBuild = (name)=>{
   this.setLoader("Creating New Build....")
   axios({
       method: 'put',
-      url: `https://pc-builder-api.herokuapp.com/build/`,
+      url: `http://pc-builder-api.herokuapp.com/build/`,
       
       data: {
         name: name
@@ -175,7 +175,7 @@ deleteBuild = (id)=>{
     this.setLoaderTrue()
     axios({
         method: 'delete',
-        url: `https://pc-builder-api.herokuapp.com/build/`,
+        url: `http://pc-builder-api.herokuapp.com/build/`,
         withCredentials: true,
         data: {
           id: id
@@ -200,7 +200,7 @@ updateBuilds = ()=>{
       this.setLoaderTrue()
       axios({
         method: 'get',
-        url: `https://pc-builder-api.herokuapp.com/build/`, 
+        url: `http://pc-builder-api.herokuapp.com/build/`, 
         withCredentials: true,
         headers:{
           'Access-Control-Allow-Credentials': true,
@@ -245,7 +245,7 @@ editItemValues = (values, itemId)=>{
   this.setLoader("Changing Values....");
   axios({
       method: 'patch',
-      url: `https://pc-builder-api.herokuapp.com/item/${values.buildId}`,
+      url: `http://pc-builder-api.herokuapp.com/item/${values.buildId}`,
       withCredentials: true,
       data: {
         id: itemId,
@@ -276,7 +276,7 @@ setNewItem = (values)=>{
   this.setLoader(`Adding ${values.partname}...`)
   axios({
       method: 'put',
-      url: `https://pc-builder-api.herokuapp.com/item/${values.buildId}`,
+      url: `http://pc-builder-api.herokuapp.com/item/${values.buildId}`,
       withCredentials: true,
       data: {
         name: values.partname,
@@ -304,7 +304,7 @@ this.setModal()
 this.setLoader('Deleting Component....')
   axios({
       method: 'delete',
-      url: `https://pc-builder-api.herokuapp.com/item/${buildId}`,
+      url: `http://pc-builder-api.herokuapp.com/item/${buildId}`,
       withCredentials: true,
       data: {
         id: itemId
@@ -342,7 +342,7 @@ this.setLoader('Deleting Component....')
   RefreshAccessToken=()=>{
     axios({
         method: 'get',
-        url: 'https://pc-builder-api.herokuapp.com/refreshaccesstoken',
+        url: 'http://pc-builder-api.herokuapp.com/refreshaccesstoken',
         withCredentials: true,
         headers:{
             'Access-Control-Allow-Credentials': true,
@@ -394,7 +394,7 @@ this.setLoader('Deleting Component....')
   setLogout = ()=>{
     axios({
       method: 'delete',
-      url: `https://pc-builder-api.herokuapp.com/userlogout`,
+      url: `http://pc-builder-api.herokuapp.com/userlogout`,
       withCredentials: true,
       headers:{
         'Access-Control-Allow-Credentials': true,
@@ -427,7 +427,7 @@ this.setLoader('Deleting Component....')
 
     axios({
         method: 'post',
-        url: 'https://pc-builder-api.herokuapp.com/userlogin',
+        url: 'http://pc-builder-api.herokuapp.com/userlogin',
         data: bodyFormData,
         withCredentials: true,
         headers: {
