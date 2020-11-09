@@ -10,6 +10,7 @@ export const ProtectedRoute =({component:Component, ...rest})=>{
     const context = React.useContext(MainContext);
 
     const isAuthenticated = Cookies.get('isAuthenticated');
+    
 
     return(
         <Route 

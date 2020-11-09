@@ -1,9 +1,12 @@
 import React,{Component} from 'react';
 import axios from 'axios';
+import {MainContext} from '../contexts/MainContexts';
 
 
 
 export default class Signup extends Component{
+
+    static contextType=MainContext
 
     state={
         email:"",
@@ -23,7 +26,7 @@ export default class Signup extends Component{
     render(){
         return(
                 <div className="form-container sign-in-container">
-                            <form onSubmit={(event)=>this.props.handleLoginSubmit(event, this.state.email, this.state.password)}>
+                            <form onSubmit={(event)=>{this.context.setLoaderTrue(); this.props.handleLoginSubmit(event, this.state.email, this.state.password);}}>
                                 <h1>Sign in</h1>
                                 <div className="social-container">
                                     <a href="#" className="social"><i className="fab fa-facebook-f"></i></a>

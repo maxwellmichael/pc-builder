@@ -72,6 +72,7 @@ export default function AddItemForm(props){
                             <option name="Hdd">HDD</option>
                             <option name="Psu">PSU</option>
                             <option name="Os">OS</option>
+                            <option name="RAM">RAM</option>
                             <option name="Cooler">Cooler</option>
                             <option name="Monitor">Monitor</option>
                             <option name="Keyboard">Keyboard</option>

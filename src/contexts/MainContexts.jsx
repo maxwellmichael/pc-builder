@@ -7,7 +7,9 @@ let MainContext = React.createContext();
 
 class MainContextProvider extends Component{
 
+   
     state = {
+        apiUrl:"http://pcbuilder.com:5000",
         builds:[],
         buildTitle:{
             nameInputHidden:true,
@@ -37,9 +39,6 @@ class MainContextProvider extends Component{
 
         tokens:{
           access_token:null,
-          csrf_access_token:null,
-          csrf_refresh_token:null,
-
         },
 
         authForm:{
@@ -55,13 +54,7 @@ class MainContextProvider extends Component{
         
     }
 
-  componentDidMount(){
-      this.setCSRFTokens()
-      if(this.state.tokens.csrf_access_token){
-        this.setState({isAuthorized:true})
-      }
-
-   }
+  
 
   /********* Auth Mobile Form Functions *********/
 
@@ -93,12 +86,11 @@ changeTitleInputValue = (e)=>{
 }
 
 renameBuildTitle = (id, ref)=>{
-    this.setLoader(`Renaming to ${ref.current.value}`)
+    this.setLoaderTrue()
     const newName = ref.current.value;
-    console.log("new Name", newName);
     axios({
         method: 'patch',
-        url: `https://pc-builder-api.herokuapp.com/build/`,
+        url: this.state.apiUrl+`/build/`,
         withCredentials: true,
         data: {
           id: id,
@@ -107,8 +99,7 @@ renameBuildTitle = (id, ref)=>{
         headers:{
           'Access-Control-Allow-Credentials': true,
           'Access-Control-Allow-Methods': '*',
-          'csrf_access_token': this.state.tokens.csrf_access_token,
-          'csrf_refresh_token': this.state.tokens.csrf_refresh_token,
+          'X-CSRF-TOKEN': Cookies.get('csrf_access_token'),
         }
       }).then(res=>{
 
@@ -121,15 +112,10 @@ renameBuildTitle = (id, ref)=>{
             this.setState({builds: newBuilds});
             this.setNameInput()
             this.setLoader()
-            
-
-          }
-          else if(res.status===401){
-            this.setCSRFTokens();
-          }
-          })
+        }})
         .catch(err=>{
-            this.setCSRFTokens();
+          this.setLoaderFalse()
+         
         })
 }
 
@@ -138,11 +124,10 @@ renameBuildTitle = (id, ref)=>{
 /**************** Build Functions ***************/
 setNewBuild = (name)=>{
   this.setModal()
-  this.setLoader("Creating New Build....")
+  this.setLoaderTrue()
   axios({
       method: 'put',
-      url: `https://pc-builder-api.herokuapp.com/build/`,
-      
+      url: this.state.apiUrl+`/build/`,
       data: {
         name: name
       },
@@ -150,32 +135,35 @@ setNewBuild = (name)=>{
       headers:{
         'Access-Control-Allow-Credentials': true,
         'Access-Control-Allow-Methods': '*',
-        'csrf_access_token': Cookies.get('csrf_access_token'),
-        'csrf_refresh_token': Cookies.get('csrf_refresh_token'),
+        //This Header is used to Protect the request from CSRF Attacks
+        'X-CSRF-TOKEN': Cookies.get('csrf_access_token'),
+       
       }
 
     }).then(
         res=>{
-          console.log("Put", res)
           const newBuild = res.data;
           let newBuilds = [...this.state.builds];
           newBuilds.push(newBuild)
           this.setState({builds: newBuilds});
-          this.setLoader()
+          this.setLoaderFalse()
         })
       .catch(err=>{
-        console.log(err)
+        console.log("err", err)
+        this.setLoaderFalse()
+        
       })
 
 }
 
 
 deleteBuild = (id)=>{
+   
     this.setModal()
     this.setLoaderTrue()
     axios({
         method: 'delete',
-        url: `https://pc-builder-api.herokuapp.com/build/`,
+        url: this.state.apiUrl+`/build/`,
         withCredentials: true,
         data: {
           id: id
@@ -183,54 +171,54 @@ deleteBuild = (id)=>{
         headers:{
           'Access-Control-Allow-Credentials': true,
           'Access-Control-Allow-Methods': '*',
-          'csrf_access_token': this.state.tokens.csrf_access_token,
-          'csrf_refresh_token': this.state.tokens.csrf_refresh_token,
+          'X-CSRF-TOKEN': Cookies.get('csrf_access_token'),
         }
       }).then(
           res=>{
-           this.updateBuilds()
-           this.setLoaderFalse()
-          });
+            //Removes the Build from state
+            if(res.status===200){
+              let Builds = [...this.state.builds];
+              let newBuilds = Builds.filter(build=>build.id != id)
+              this.setState({builds:newBuilds})
+              this.setLoaderFalse()
+            }
+           
+          })
+        .catch(err=>{
+          this.setLoaderFalse()
+        })
 
 } 
 
 updateBuilds = ()=>{
-    const csrf_access_token = Cookies.get('csrf_access_token');
-    if(csrf_access_token){
+    
+    if(Cookies.get('csrf_access_token')){
       this.setLoaderTrue()
       axios({
         method: 'get',
-        url: `https://pc-builder-api.herokuapp.com/build/`, 
+        url: this.state.apiUrl+`/build/`, 
         withCredentials: true,
         headers:{
           'Access-Control-Allow-Credentials': true,
           'Access-Control-Allow-Methods': '*',
-          'csrf_access_token': this.state.tokens.csrf_access_token,
-          'csrf_refresh_token': this.state.tokens.csrf_refresh_token,
+          'X-CSRF-TOKEN': Cookies.get('csrf_access_token'),
         }
       })
         .then(res=>{
-          console.log(res.status)
+          this.setLoaderFalse()
             if(res.status===200){
                 this.setState({builds:res.data})
-                this.setLoaderFalse()
-                this.setCSRFTokens() 
               }
-                  
-            else if(res.status===401){
-              this.RefreshAccessToken();
-              this.setCSRFTokens() 
-              this.updateBuilds();
-            }
-
-
-              })
+        })
         .catch(err=>{
-              console.log(err);
-              this.RefreshAccessToken()
-              this.setCSRFTokens() 
-              })
+              this.setLoaderFalse()
+        })
         
+      }
+      else{
+        const loginRetryFlash = {title:"Login", func:"LOGIN_RETRY", typeSuccess:false, message: "Missing CSRF Tokens", buttonText: "Okay"}
+        this.setFlashType(loginRetryFlash)
+        this.setFlash()
       }
 
     
@@ -242,10 +230,10 @@ updateBuilds = ()=>{
 //******************** Items Functions ***********************
 editItemValues = (values, itemId)=>{
   this.setModal();
-  this.setLoader("Changing Values....");
+  this.setLoaderTrue();
   axios({
       method: 'patch',
-      url: `https://pc-builder-api.herokuapp.com/item/${values.buildId}`,
+      url: this.state.apiUrl+`/item/${values.buildId}`,
       withCredentials: true,
       data: {
         id: itemId,
@@ -259,24 +247,38 @@ editItemValues = (values, itemId)=>{
       headers:{
         'Access-Control-Allow-Credentials': true,
         'Access-Control-Allow-Methods': '*',
-        'csrf_access_token': this.state.tokens.csrf_access_token,
-        'csrf_refresh_token': this.state.tokens.csrf_refresh_token,
+        'X-CSRF-TOKEN': Cookies.get('csrf_access_token'),
       }
       
     }).then(
         res=>{
-          this.updateBuilds();
-          this.setLoader();
-        });
+          const newItem = res.data
+          let newBuilds = [...this.state.builds];
+          let BuildIndex = newBuilds.findIndex(build=>build.id===values.buildId);
+          let itemIndex = newBuilds[BuildIndex].items.findIndex(item=>item.id===itemId)
+          newBuilds[BuildIndex].items[itemIndex].buildId=newItem.buildId;
+          newBuilds[BuildIndex].items[itemIndex].category=newItem.category;
+          newBuilds[BuildIndex].items[itemIndex].description=newItem.description;
+          newBuilds[BuildIndex].items[itemIndex].imageUrl=newItem.imageUrl;
+          newBuilds[BuildIndex].items[itemIndex].name=newItem.name;
+          newBuilds[BuildIndex].items[itemIndex].price=newItem.price;
+          newBuilds[BuildIndex].items[itemIndex].starRating=newItem.starRating;
+          newBuilds[BuildIndex].items[itemIndex].totalRating=newItem.totalRating;
+          this.setState({builds: newBuilds});
+          this.setLoaderFalse();
+        })
+      .catch(err=>{
+          this.setLoaderFalse()
+      })
 
 }
 
 setNewItem = (values)=>{
   this.setModal();
-  this.setLoader(`Adding ${values.partname}...`)
+  this.setLoaderTrue()
   axios({
       method: 'put',
-      url: `https://pc-builder-api.herokuapp.com/item/${values.buildId}`,
+      url: this.state.apiUrl+`/item/${values.buildId}`,
       withCredentials: true,
       data: {
         name: values.partname,
@@ -288,23 +290,28 @@ setNewItem = (values)=>{
       headers:{
         'Access-Control-Allow-Credentials': true,
         'Access-Control-Allow-Methods': '*',
-        'csrf_access_token': this.state.tokens.csrf_access_token,
-        'csrf_refresh_token': this.state.tokens.csrf_refresh_token,
+        'X-CSRF-TOKEN': Cookies.get('csrf_access_token'),
       }
     }).then(
-        res=>{
-          this.updateBuilds();
-          this.setLoader()
-        });
+        res=>{  
+          let newBuilds = [...this.state.builds];
+          let BuildIndex = newBuilds.findIndex(build=>build.id===values.buildId);
+          newBuilds[BuildIndex].items.push(res.data);
+          this.setState({builds: newBuilds});
+          this.setLoaderFalse()
+        })
+      .catch(err=>{
+        this.setLoaderFalse()
+      })
 
 }
 
 deleteItem = (buildId, itemId)=>{
 this.setModal()
-this.setLoader('Deleting Component....')
+this.setLoaderTrue()
   axios({
       method: 'delete',
-      url: `https://pc-builder-api.herokuapp.com/item/${buildId}`,
+      url: this.state.apiUrl+`/item/${buildId}`,
       withCredentials: true,
       data: {
         id: itemId
@@ -312,74 +319,24 @@ this.setLoader('Deleting Component....')
       headers:{
         'Access-Control-Allow-Credentials': true,
         'Access-Control-Allow-Methods': '*',
-        'csrf_access_token': this.state.tokens.csrf_access_token,
-        'csrf_refresh_token': this.state.tokens.csrf_refresh_token,
+        'X-CSRF-TOKEN': Cookies.get('csrf_access_token'),
       }
     }).then(
         res=>{
-         this.updateBuilds()
-         this.setLoader()
-        })
-        .catch(err=>console.log(err));
+          // Removes the Item From the Build
+          let newBuilds = [...this.state.builds];
+          let BuildIndex = newBuilds.findIndex(build=>build.id===buildId);
+          const newItems = newBuilds[BuildIndex].items.filter(item=>item.id != itemId)
+          newBuilds[BuildIndex].items = newItems;
+          this.setState({builds: newBuilds})
 
-}
-
-  
-
-
-
-
-  /********************** Token Functions ****************/
-  setCSRFTokens=()=>{
-      const csrf_access_token = Cookies.get('csrf_access_token');
-      const csrf_refresh_token = Cookies.get('csrf_refresh_token');
-      let newTokens = this.state.tokens
-      newTokens.csrf_refresh_token = csrf_refresh_token;
-      newTokens.csrf_access_token = csrf_access_token
-      this.setState({tokens:newTokens})
-  }
-
-  RefreshAccessToken=()=>{
-    axios({
-        method: 'get',
-        url: 'https://pc-builder-api.herokuapp.com/refreshaccesstoken',
-        withCredentials: true,
-        headers:{
-            'Access-Control-Allow-Credentials': true,
-            'Access-Control-Allow-Methods': '*',
-            'csrf_access_token': this.state.tokens.csrf_access_token,
-            'csrf_refresh_token': this.state.tokens.csrf_refresh_token,
-          }
-        }).then(res=>{
-          if(res.status==200){
-            this.setCSRFTokens()
-            this.updateBuilds()
-          }
-          
-          else if(res.status==401){
-            this.setState({isAuthorized:false})
-            const loginRetryFlash = {title:"Login", func:"LOGIN_RETRY", typeSuccess:false, message: "Please Login to Continue", buttonText: "Login"}
-            this.setFlashType(loginRetryFlash)
-            this.setFlash()
-          }
-          
+          this.setLoaderFalse()
         })
         .catch(err=>{
-          console.log(err)
-          this.setState({isAuthorized:false})
-          const loginRetryFlash = {title:"Login", func:"LOGIN_RETRY", typeSuccess:false, message: "Please Login to Continue", buttonText: "Login"}
-          this.setFlashType(loginRetryFlash)
-          this.setFlash()
+          this.setLoaderFalse()
         })
-  }
 
-
-
-
-
-  
-
-
+}
 
 
 
@@ -394,18 +351,17 @@ this.setLoader('Deleting Component....')
   setLogout = ()=>{
     axios({
       method: 'delete',
-      url: `https://pc-builder-api.herokuapp.com/userlogout`,
+      url: this.state.apiUrl+`/userlogout`,
       withCredentials: true,
       headers:{
         'Access-Control-Allow-Credentials': true,
         'Access-Control-Allow-Methods': '*',
-        'csrf_access_token': this.state.tokens.csrf_access_token,
-        'csrf_refresh_token': this.state.tokens.csrf_refresh_token,
+        'X-CSRF-TOKEN': Cookies.get('csrf_access_token'),
       }
     })
     .then(resp=>{
       if(resp.status===200){
-        Cookies.set('isAuthenticated', false, { expires: 1 });
+        Cookies.set('isAuthenticated', false)
         const loginRetryFlash = {title:"Login", func:"LOGIN_RETRY", typeSuccess:false, message: "Please Login to Continue", buttonText: "Login"}
           this.setFlashType(loginRetryFlash)
           this.setFlash()
@@ -418,16 +374,21 @@ this.setLoader('Deleting Component....')
 
 
 
-  handleLoginSubmit = async (event, email, password)=>{
-    event.preventDefault();
-    
+  handleLoginSubmit = (event, email, password)=>{
+    event.preventDefault();  
+    this.setLoaderTrue()
     let bodyFormData = new FormData();
     bodyFormData.append('email', email);
     bodyFormData.append('password', password);
 
+    //Default Flash Messages
+    const loginRetryFlash = {title:"Login", func:"LOGIN_RETRY", typeSuccess:false, message: "Please Login to Continue", buttonText: "Login"}
+    const loginSuccessFlash = {title:"Login", func:"LOGIN_SUCCESS", typeSuccess:true, message: "Successfully Logged In!..", buttonText: "Continue"}
+
+
     axios({
         method: 'post',
-        url: 'https://pc-builder-api.herokuapp.com/userlogin',
+        url: this.state.apiUrl+'/userlogin',
         data: bodyFormData,
         withCredentials: true,
         headers: {
@@ -437,27 +398,29 @@ this.setLoader('Deleting Component....')
         },
         })
     .then(res=>{
-        
-        console.log("RESPONSE", res)
-
-        if(res.status==200){
-          Cookies.set('isAuthenticated', true, { expires: 1 });
-          const loginSuccessFlash = {title:"Login", func:"LOGIN_SUCCESS", typeSuccess:true, message: "Successfully Logged In!..", buttonText: "Continue"}
-          this.setFlashType(loginSuccessFlash)
-          this.setFlash()
+        const csrf_access_token = Cookies.get('csrf_access_token');
+        if(res.status==200 && csrf_access_token){
+          Cookies.set('isAuthenticated', true, { expires: 7 })
+          this.setFlashShown(loginSuccessFlash)
+        }
+        // If Response is 200 but didnt receive CSRF Tokens Retry Login
+        else{
+          const loginRetryFlash = {title:"Login", func:"LOGIN_RETRY", typeSuccess:false, message: "You Have Logged in From a Different Domain", buttonText: "Okay"}
+          this.setFlashShown(loginRetryFlash)
         }
     })
     .catch(err=>{
-      console.log("LOGIN_ERROR", err)
-        if(err.response.status===401){
-          this.RefreshAccessToken()
-        }
-        else if(err.response.status===404){
-          const loginRetryFlash = {title:"Login", func:"LOGIN_RETRY", typeSuccess:false, message: "Please Login to Continue", buttonText: "Login"}
-          this.setFlashType(loginRetryFlash)
-          this.setFlash()
-        }
-        
+      /* If The Error contains a Response*/
+      if(err.response){
+        this.setFlashType(loginRetryFlash)
+        this.setFlash()
+      }
+      /* If the Error Does not Contain a Response(Mainly Network Error) */
+      else{
+        const loginRetryFlash = {title:"Login", func:"LOGIN_RETRY", typeSuccess:false, message: "Cant Connect To Network", buttonText: "Okay"}
+        this.setFlashType(loginRetryFlash)
+        this.setFlash()
+      }
     })
   }
 
@@ -513,6 +476,23 @@ this.setLoader('Deleting Component....')
     this.setState({newState})
    }
 
+   setFlashHidden=()=>{
+    const newState = {...this.state};
+    newState.flashMessage.hidden = true;
+    this.setState({newState})
+   }
+
+   setFlashShown=(flash)=>{
+    const newState = {...this.state};
+    newState.flashMessage.typeSuccess = flash.typeSuccess;
+    newState.flashMessage.title = flash.title;
+    newState.flashMessage.message = flash.message;
+    newState.flashMessage.buttonText = flash.buttonText;
+    newState.flashMessage.func = flash.func;
+    newState.flashMessage.hidden = false;
+    this.setState({newState})  
+   }
+
    setFlashType=(flash)=>{
       const newState = {...this.state};
       newState.flashMessage.typeSuccess = flash.typeSuccess;
@@ -520,24 +500,56 @@ this.setLoader('Deleting Component....')
       newState.flashMessage.message = flash.message;
       newState.flashMessage.buttonText = flash.buttonText;
       newState.flashMessage.func = flash.func;
-
       this.setState({newState})
    }
 
-
-    
-
-
-    
-
-    
-
     render(){
+
+      
+
+        axios.interceptors.response.use(null ,
+            err => {
+              const originalRequest = err.config;
+              //IF The Response is Unauthorized
+              // Refresh Token Has Expired
+              // User Must Login
+              if(err.response.status === 401 && originalRequest.url === this.state.apiUrl+'/refreshaccesstoken'){
+                  const loginRetryFlash = {title:"Login", func:"LOGIN_RETRY", typeSuccess:false, message: "Please Login to Continue Refresh", buttonText: "Okay"}
+                  this.setFlashType(loginRetryFlash)
+                  this.setFlash()
+              }
+
+              // Access Token Has Expired 
+              //Refreshes the Access Token
+              else if(err.response.status === 401 && !originalRequest._retry){
+                originalRequest._retry = true;
+                return axios({
+                    method: 'get',
+                    url: this.state.apiUrl+'/refreshaccesstoken',
+                    withCredentials: true,
+                    headers:{
+                      'Access-Control-Allow-Credentials': true,
+                      'Access-Control-Allow-Methods': '*',
+                      'X-CSRF-TOKEN': Cookies.get('csrf_access_token'),
+                    }
+                })
+                .then(res=>{
+                  if(res.status===200){
+                    originalRequest.headers['X-CSRF-TOKEN'] = Cookies.get('csrf_access_token');
+                    return axios(originalRequest);
+                  }
+                })
+              }
+              return Promise.reject(err)
+            }
+            
+        );
+
         const {authMobileForm, isAuthorized, flashMessage, builds, buildTitle, modal, loader, authForm} = this.state;
-        const {unsetAuthMobileLogin, setAuthMobileLogin, setLogout, setFlash, setFlashType, updateBuilds, setAccessToken, RefreshAccessToken, handleLoginSubmit, setRightPanelOverlayActive, setLoaderFalse, setLoaderTrue, setLoader, editItemValues, deleteItem, setNewItem, setNameInput, changeTitleInputValue, renameBuildTitle, setModal, setModalType, setNewBuild, deleteBuild} = this;
+        const {unsetAuthMobileLogin, setAuthMobileLogin, setLogout, setFlash, setFlashHidden, setFlashShown, setFlashType, updateBuilds, setAccessToken, RefreshAccessToken, handleLoginSubmit, setRightPanelOverlayActive, setLoaderFalse, setLoaderTrue, setLoader, editItemValues, deleteItem, setNewItem, setNameInput, changeTitleInputValue, renameBuildTitle, setModal, setModalType, setNewBuild, deleteBuild} = this;
 
         return( 
-            <MainContext.Provider value={{unsetAuthMobileLogin, setAuthMobileLogin, authMobileForm, isAuthorized, setLogout, setFlash, setFlashType, flashMessage, updateBuilds, setAccessToken, RefreshAccessToken, handleLoginSubmit, setRightPanelOverlayActive, authForm, setLoaderFalse, setLoaderTrue, setLoader, loader, editItemValues, deleteItem,setNewItem, builds, buildTitle, modal, setNameInput, changeTitleInputValue, renameBuildTitle, setModal, setModalType, setNewBuild, deleteBuild}}>
+            <MainContext.Provider value={{unsetAuthMobileLogin, setAuthMobileLogin, authMobileForm, isAuthorized, setLogout, setFlashHidden, setFlashShown, setFlash, setFlashType, flashMessage, updateBuilds, setAccessToken, RefreshAccessToken, handleLoginSubmit, setRightPanelOverlayActive, authForm, setLoaderFalse, setLoaderTrue, setLoader, loader, editItemValues, deleteItem,setNewItem, builds, buildTitle, modal, setNameInput, changeTitleInputValue, renameBuildTitle, setModal, setModalType, setNewBuild, deleteBuild}}>
                 {this.props.children}
             </MainContext.Provider>
         );

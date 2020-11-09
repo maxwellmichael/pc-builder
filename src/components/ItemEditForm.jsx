@@ -92,6 +92,7 @@ export default function EditItemForm(props){
                             <option name="Ssd">SSD</option>
                             <option name="Hdd">HDD</option>
                             <option name="Psu">PSU</option>
+                            <option name="RAM">RAM</option>
                             <option name="Os">OS</option>
                             <option name="Cooler">Cooler</option>
                             <option name="Monitor">Monitor</option>

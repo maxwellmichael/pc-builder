@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
 import {Navbar, Nav, NavDropdown} from 'react-bootstrap';
-import {MainContext} from '../contexts/MainContexts'
+import {MainContext} from '../contexts/MainContexts';
+import Cookies from 'js-cookie';
 
 
 class NavBar extends Component{
@@ -18,9 +19,10 @@ class NavBar extends Component{
                     <Nav className="mr-auto">
 
                     <Link className="nav-link" to="/">Home</Link>
-                    {this.context.isAuthorized ? <Link className="nav-link" to="/builds">Builds</Link> : null}
+                    {Cookies.get('csrf_access_token') ? <Link className="nav-link" to="/builds">Builds</Link> : null}
                     <Link className="nav-link" to="/userauthenticate">Login/SignUp</Link>
-                    {this.context.isAuthorized ? <Link onClick={()=>this.context.setLogout()} to="/userauthenticate" className="nav-link">Logout</Link> : null}
+                    <Link className="nav-link" to="/test">Test</Link>
+                    {Cookies.get('csrf_access_token') ? <Link onClick={()=>this.context.setLogout()} to="/userauthenticate" className="nav-link">Logout</Link> : null}
                     
                     <NavDropdown title="Dropdown" id="collasible-nav-dropdown">
                         <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>

@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import './scss/main.scss';
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import {MainContextProvider} from './contexts/MainContexts';
 
-import './scss/main.scss';
 
 import Builds from './pages/builds'; 
 import Home from './pages/home';

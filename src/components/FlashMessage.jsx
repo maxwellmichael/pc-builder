@@ -10,7 +10,6 @@ export default class FlashMessage extends Component{
 
 
     handleFlashFunc =()=>{
-        console.log(this.context.flashMessage.func)
         const {func} = this.context.flashMessage;
         if(func==="LOGIN_RETRY"){
             return <Redirect to="/userauthenticate" />

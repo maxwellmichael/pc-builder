@@ -68,11 +68,11 @@ export default class MobileForm extends Component{
                     >
                     {props => 
                     <div style={props}>
-                        <form onSubmit={(event)=>this.context.handleLoginSubmit(event, this.state.email, this.state.password)} className="register-form">
+                        <form onSubmit={(event)=>{this.context.handleLoginSubmit(event, this.state.email, this.state.password); this.context.setLoaderTrue()}} className="register-form">
                             <h1>Login</h1>
                             <div className="form-input-material">
-                                <label htmlFor="username">Email</label>
-                                <input onChange={this.setName} type="email" name="email" id="username" placeholder=" " autoComplete="false" className="form-control-material" required />
+                                <label htmlFor="email">Email</label>
+                                <input onChange={this.setEmail} type="email" name="email" id="email" placeholder=" " autoComplete="false" className="form-control-material" required />
                             </div>
                             <div className="form-input-material">
                                 <label htmlFor="password">Password</label>

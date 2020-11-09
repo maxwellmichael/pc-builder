@@ -16,9 +16,11 @@
 
 .builds_main{
     margin:0;
+    margin-bottom: 0;
     width: 100%;
     height: auto;
-    background-color: black;
+    background-color: #191b2b;
+    padding-bottom: 10px;
 
     .builds-content-marquee{
         margin:0;

@@ -2,19 +2,24 @@
 
 @import 'pages/builds';
 @import 'pages/home';
+@import 'pages/userAuthForm';
+
 @import 'layout/navbar';
 @import 'layout/footer';
 @import 'layout/layout';
 @import 'components/card';
+@import 'components/ItemCard';
+
 @import 'components/NewBuildForm';
 @import 'components/DeleteBuildButtons';
 @import 'components/AddItemForm';
 @import 'components/itemEditForm';
 @import 'components/modal';
 @import 'components/loader';
-@import 'pages/userAuthForm';
 @import 'components/FlashMessage';
-@import 'components/_userAuthFormMobile';
+@import 'components/userAuthFormMobile';
+
+
 
 
 

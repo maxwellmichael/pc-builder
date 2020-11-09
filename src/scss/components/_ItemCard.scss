@@ -1,0 +1,290 @@
+@import '../abstract/color_variables';
+
+
+
+.item{
+    position: relative;
+    background-color: white;
+    box-sizing: border-box;
+    display: flex;
+    padding:0;
+    margin: auto;
+    margin-top: 2%;
+    height: 250px;
+    min-height: 200px;
+    width: 450px;
+    border-radius: 6px;
+    border: 2px solid $pink;
+    border-top: 4px solid $pink;
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);
+    transition: box-shadow 0.3s;
+    transition: border 0.3s;
+    overflow: hidden;
+
+    .category-icon{
+        position: absolute;
+		width: 48px;
+		height: 48px;
+        top: 0;
+        left: 0;
+		padding: 5%;
+		background-color: $pink;
+		border-bottom-right-radius: 8px;
+		border: 1px solid $pink;
+		background-position: center;
+		background-repeat: no-repeat;
+        background-size: cover;
+        z-index: 2;
+    }
+
+    .photo{
+        width:40%;
+        height: 100%;
+        margin:0;
+        padding:0;
+        overflow: hidden;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: contain;
+        zoom: normal;
+        transition: transform 0.6s;
+    }
+
+    .content{
+        width: 59%;
+        margin:0;
+        margin-top: 2%;
+        margin-left: 4%;
+        float: right;
+        font-family: Rajdhani,Arial,Verdana,Helvetica,sans-serif;
+
+        .title{
+            font-weight: 600;
+            text-align: left;
+            font-size: 26px;
+            text-transform: uppercase;
+			position: relative;
+			letter-spacing: 1px;
+            max-height: 35px;
+            overflow: hidden;
+        }
+
+        .category{
+            text-align: left;
+            font-size: 18px;
+            font-weight: 300;
+            font-family: Baloo,Arial,Verdana,Helvetica,sans-serif;
+        }
+
+        .price{
+            text-align: left;
+            font-size: large;
+            font-weight: bold;
+        }
+
+        .ratings{
+            margin-top:0;
+            padding:0;
+            display: inline;
+            h3 {
+                color: #FFFFFF;
+                font-weight: 300;
+                font-size: 14px;
+                text-transform: uppercase;
+                letter-spacing: 2px;
+                margin: 0;
+                padding: 0;
+            }
+            p {
+                font-size: 14px;
+                color: black;
+                letter-spacing: 1px;
+                margin: 0;
+                padding: 0;
+
+                .badge{
+                    border-radius: 4px;
+                    background-color: yellow;
+                    color: black;
+                    font-size: medium;
+
+                }
+            }
+        }
+
+        .description{
+            padding-right: 12px;
+            text-align: justify;
+            font-size: small;
+            font-family: Baloo,Arial,Verdana,Helvetica,sans-serif;
+            max-height: 20px;
+            overflow: hidden;
+            
+        }
+
+       .icons{
+            width: 35%;
+            height: 40px;
+            margin:0;
+            margin-left: auto;
+            padding: 0;
+            display: inline;
+         
+
+            .icon{
+                margin: auto;
+                margin-left: 7px;
+                margin-right: 7px;
+				text-align: center;
+                padding: auto;
+				font-size: 20px;
+				border:0;
+				width: 32px;
+				height: 32px;
+                background-color: transparent;
+                transition: border-bottom 0.4s;
+                outline: 0;
+            }
+       }
+
+      
+    }
+
+    &:hover{
+        box-shadow: 0 8px 17px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+        border-right: 2px solid $pink;
+        border-bottom: 2px solid $pink;
+        border-left: 2px solid $pink;
+
+        .photo{
+            transform: scale(1.2);
+        }
+        
+    }
+}
+
+
+@media only screen and (max-width: 1005px){
+
+        .item{
+            margin: 0;  
+            margin-left: auto;
+            margin-right: auto;
+            width: 300px;
+            height: 200px;
+            margin-top:12px;
+            margin-bottom:5px;
+            box-shadow: 0;
+            &:hover{
+                box-shadow: 0px 0px 15px -2px rgba(50, 50, 50, 0.67);
+            }
+        
+        
+            .content{
+                width: 59%;
+                margin:0;
+                margin-top: 2%;
+                margin-left: 4%;
+                float: right;
+        
+                .title{
+                    font-size: 20px;
+                    max-height: 20px;
+                }
+        
+                .category{
+                    font-size: 16px;
+                }
+        
+                .price{
+                    font-size: 18px;
+                }
+        
+                .description{
+                    font-size: 11px;
+                    max-height: 30px;
+                    overflow: hidden;
+                }
+
+                .icons{
+                    width: 50%;
+                    height: 40px;
+                    margin-left: 25%;
+                    padding-top: 4%;
+                    
+        
+                    .icon{
+                        margin: auto;
+                        margin-left: 7px;
+                        margin-right: 7px;
+                        text-align: center;
+                        padding: auto;
+                        font-size: 18px;
+                        border:0;
+                        width: 22px;
+                        height: 22px;
+                        background-color: transparent;
+                       
+                    }
+               }
+        
+            }
+        
+        
+        }
+    }
+
+
+@media only screen and (max-width: 600px){
+
+
+    .item{
+        width: 300px;
+        height: 200px;
+        margin-top:5px;
+        margin-bottom:5px;
+        box-shadow: 0;
+        &:hover{
+            box-shadow: -2px 11px 24px 0px rgba(0,0,0,0.82);  
+        }
+    
+
+        .content{
+            width: 59%;
+            margin:0;
+            margin-top: 2%;
+            margin-left: 4%;
+            float: right;
+    
+            .title{
+                font-size: 16px;
+                max-height: 35px;
+            }
+    
+            .category{
+                font-size: smaller;
+            }
+    
+            .price{
+                font-size: medium;
+            }
+    
+            .description{
+                font-size: 10px;
+                max-height: 28px;
+				overflow: hidden;
+            }
+
+            .icons{
+                .icon{
+                    width: 24px;
+                    height: 24px;
+                   
+                }
+            }
+            
+    
+        }
+            
+    }
+}

@@ -2,10 +2,13 @@ import React, {Component} from 'react';
 import Modal from '../components/modal';
 import FlashMessage from '../components/FlashMessage';
 import {Row, Container} from 'react-bootstrap';
-import Card from '../components/card';
 import {MainContext} from '../contexts/MainContexts';
 import BuildTitle from '../components/BuildTitle';
+import ItemCard from '../components/ItemCard';
 import Loader from '../components/loader';
+
+import MediaQuery from 'react-responsive'
+
 
 
 
@@ -16,11 +19,9 @@ class Builds extends Component{
 
     componentDidMount(){
         this.context.updateBuilds()
-        this.context.setLoaderFalse()
         
     }
     componentWillUnmount(){
-        this.context.setLoaderTrue()
     }
 
     render(){
@@ -57,8 +58,6 @@ class Builds extends Component{
                    this.context.builds.map(build=>{
                     const deleteBuildModal = {title:"Are you sure to delete this Build?", type:"DELETEBUILD", buildId:build.id};
                     const addBuildItemModal = {title:"Add a New Part to Your Build", type:"ADDITEM", buildId:build.id}
-
-
                     return(
                     <div key={build.id}  className="build-container">
                         
@@ -77,33 +76,20 @@ class Builds extends Component{
                             {
                                 build.items.map(item=>{
                                     const deleteItemModal= {title:"Are you sure to delete this Item?", type:"DELETEITEM", buildId:build.id, itemId:item.id};
-                                    return(<Card key={item.id} 
-                                        editItem={(defaultValues)=>{
-                                            const editItemModal= {title:"Change as to Your Desired Values", type:"EDITITEM", buildId:build.id, itemId:item.id, data:defaultValues};
-                                            this.context.setModalType(editItemModal);
-                                        }} 
-                                        deleteItem={(itemId)=>this.context.setModalType(deleteItemModal)} 
-                                        item={item}/>)
+                                    return(
+                                        <ItemCard 
+                                            key={item.id} 
+                                            editItem={(defaultValues)=>{
+                                                const editItemModal= {title:"Change as to Your Desired Values", type:"EDITITEM", buildId:build.id, itemId:item.id, data:defaultValues};
+                                                this.context.setModalType(editItemModal);
+                                                    }} 
+                                            deleteItem={(itemId)=>this.context.setModalType(deleteItemModal)} 
+                                            item={item}
+                                        />
+                                    )
                                 })
                                 
-                            }
-
-                        {/*<Transition
-                            items={build.items} keys={item => item.id}
-                            from={{ position: 'absolute',opacity:0, width:0}} 
-                            enter={{ opacity: 1, width:300 }}
-                            leave={{ opacity: 0, width:0 }}
-                            config={{delay:100, duration:400}}
-                        >
-                            {item => props => {
-                                const deleteItemModal= {title:"Are you sure to delete this Item?", type:"DELETEITEM", buildId:build.id, itemId:item.id};
-                                return(<Card style={props} editItem={(id)=>this.context.editItem(id)} deleteItem={(itemId)=>this.context.setModalType(deleteItemModal)} item={item}/>)
-                            }}
-
-                        </Transition>*/}
-
-                          
-                            
+                            }     
                         </Row>
                       
                     </div>
